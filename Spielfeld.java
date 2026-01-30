@@ -1,33 +1,40 @@
+public class Spielfeld {
+    private char[][] feld;
+    private final int zeilen = 6;
+    private final int spalten = 7;
 
-/**
- * Beschreiben Sie hier die Klasse Spielfeld.
- * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
- */
-public class Spielfeld
-{
-    // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
-    private int x;
-
-    /**
-     * Konstruktor für Objekte der Klasse Spielfeld
-     */
-    public Spielfeld()
-    {
-        // Instanzvariable initialisieren
-        x = 0;
+    public Spielfeld() {
+        feld = new char[zeilen][spalten];
+        for (int i = 0; i < zeilen; i++) {
+            for (int j = 0; j < spalten; j++) {
+                feld[i][j] = '.';
+            }
+        }
     }
 
-    /**
-     * Ein Beispiel einer Methode - ersetzen Sie diesen Kommentar mit Ihrem eigenen
-     * 
-     * @param  y    ein Beispielparameter für eine Methode
-     * @return        die Summe aus x und y
-     */
-    public int beispielMethode(int y)
-    {
-        // tragen Sie hier den Code ein
-        return x + y;
+    public boolean setzeStein(int spalte, char symbol) {
+        if (spalte < 0 || spalte >= spalten) return false;
+
+        for (int i = zeilen - 1; i >= 0; i--) {
+            if (feld[i][spalte] == '.') {
+                feld[i][spalte] = symbol;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public char[][] getFeld() {
+        return feld;
+    }
+
+    public void anzeigen() {
+        for (int i = 0; i < zeilen; i++) {
+            for (int j = 0; j < spalten; j++) {
+                System.out.print(feld[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("0 1 2 3 4 5 6");
     }
 }
