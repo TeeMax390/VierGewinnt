@@ -1,33 +1,46 @@
+public class Spiel {
+    private Spielfeld spielfeld;
+    private Regeln regeln;
+    private EinAusgabe io;
+    private Spieler spieler1;
+    private Spieler spieler2;
 
-/**
- * Beschreiben Sie hier die Klasse Spiel.
- * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
- */
-public class Spiel
-{
-    // Instanzvariablen - ersetzen Sie das folgende Beispiel mit Ihren Variablen
-    private int x;
-
-    /**
-     * Konstruktor für Objekte der Klasse Spiel
-     */
-    public Spiel()
-    {
-        // Instanzvariable initialisieren
-        x = 0;
+    public Spiel() {
+        spielfeld = new Spielfeld();
+        regeln = new Regeln();
+        io = new EinAusgabe();
+        spieler1 = new Spieler("Spieler 1", 'X');
+        spieler2 = new Spieler("Spieler 2", 'O');
     }
 
-    /**
-     * Ein Beispiel einer Methode - ersetzen Sie diesen Kommentar mit Ihrem eigenen
-     * 
-     * @param  y    ein Beispielparameter für eine Methode
-     * @return        die Summe aus x und y
-     */
-    public int beispielMethode(int y)
-    {
-        // tragen Sie hier den Code ein
-        return x + y;
+    public void starten() {
+        Spieler aktueller = spieler1;
+        boolean spielLaeuft = true;
+
+        while (spielLaeuft) {
+            spielfeld.anzeigen();
+            int spalte = io.leseSpalte(aktueller);
+
+            if (!spielfeld.setzeStein(spalte, aktueller.getSymbol())) {
+                io.ausgabe("Ungültiger Zug! Spalte voll oder nicht existent.");
+                continue;
+            }
+
+            if (regeln.pruefeSieg(spielfeld.getFeld(), aktueller.getSymbol())) {
+                spielfeld.anzeigen();
+                io.ausgabe(aktueller.getName() + " hat gewonnen!");
+                spielLaeuft = false;
+            } else if (regeln.pruefeUnentschieden(spielfeld.getFeld())) {
+                spielfeld.anzeigen();
+                io.ausgabe("Unentschieden!");
+                spielLaeuft = false;
+            } else {
+                aktueller = (aktueller == spieler1) ? spieler2 : spieler1;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new Spiel().starten();
     }
 }
